@@ -13,7 +13,7 @@ import (
 )
 
 type Application struct {
-	PersonController *controllers.PersonController
+	PersonController *controllers.PersonController `inject:""`
 }
 
 func BuildApplication(dbConn *gorm.DB) (*Application, error) {

@@ -12,7 +12,11 @@ func SetupRouters(h *context.Application) *gin.Engine {
 	apiGroup := router.Group("/api/practice-service")
 	apiGroup.Use(middleware.TokenAuthMiddleware())
 
-	apiGroup.GET("/add-person", h.PersonController.AddPerson)
+	apiGroup.POST("/add-person", h.PersonController.AddPerson)
+	apiGroup.GET("/get-person", h.PersonController.FindPersonById)
+	apiGroup.PUT("/update-person", h.PersonController.UpdatePerson)
+	apiGroup.DELETE("/delete-person", h.PersonController.DeletePerson)
+	apiGroup.GET("/get-all-persons", h.PersonController.GetAllPerson)
 
 	return router
 }

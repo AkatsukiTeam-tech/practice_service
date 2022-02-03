@@ -3,6 +3,7 @@ package repository
 import (
 	"errors"
 	"github.com/jinzhu/gorm"
+	"practive_service/infrastucture/helpers"
 	"practive_service/infrastucture/models"
 	"time"
 )
@@ -30,7 +31,7 @@ func (r PersonRepository) FindPersonById(id int) (*models.Person, error) {
 
 func (r PersonRepository) UpdatePerson(n *models.Person) (*models.Person, error) {
 	res := &models.Person{}
-	err := r.db.First(res, "id = ?", res.ID).UpdateColumns(
+	err := r.db.First(res, "id = ?", n.ID).UpdateColumns(
 		map[string]interface{}{
 			"full_name": n.FullName,
 			"age":       n.Age,
@@ -42,11 +43,18 @@ func (r PersonRepository) UpdatePerson(n *models.Person) (*models.Person, error)
 	return res, err
 }
 
-func (r PersonRepository) DeletePerson(n *models.Person) (*models.Person, error) {
-	res := &models.Person{}
-	err := r.db.First(res, "id = ?", res.ID).Delete(res).Error
+func (r PersonRepository) DeletePerson(id int) error {
+	err := r.db.Delete(models.Person{}, id).Error
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return res, err
+	return err
+}
+
+func (r PersonRepository) GetAllPerson(pagination *helpers.Pagination) ([]*models.Person, error) {
+	var persons []*models.Person
+	db := r.db.Model(persons)
+	err := r.db.Scopes(helpers.Paginate(pagination, db)).Find(&persons).Error
+
+	return persons, err
 }
