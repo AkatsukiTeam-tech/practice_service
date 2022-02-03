@@ -11,7 +11,7 @@ type PersonController struct {
 	PersonAppService *service.PersonAppService
 }
 
-func (p PersonController) AddPerson(c *gin.Context) {
+func (p *PersonController) AddPerson(c *gin.Context) {
 	var personDto dto.Person
 	err := c.BindJSON(&personDto)
 	if err != nil {
