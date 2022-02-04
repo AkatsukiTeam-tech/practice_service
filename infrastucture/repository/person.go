@@ -58,3 +58,13 @@ func (r PersonRepository) GetAllPerson(pagination *helpers.Pagination) ([]*model
 
 	return persons, err
 }
+
+func (r PersonRepository) GetAllPersonByQuery(name string, age int) ([]*models.Person, error) {
+	var persons []*models.Person
+	if name != "" {
+		name = "%" + name + "%"
+	}
+
+	err := r.db.Model(persons).Raw("Select * from people where (? = '' or lower(full_name) like lower(?)) and (? = 0 or age = ?)", name, name, age, age).Find(&persons).Error
+	return persons, err
+}

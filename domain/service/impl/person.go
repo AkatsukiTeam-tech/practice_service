@@ -88,3 +88,26 @@ func (s *PersonService) GetAllPerson(pagination helpers.Pagination) (*helpers.Pa
 
 	return &pagination, err
 }
+
+func (s *PersonService) GetAllPersonByQuery(name string, age int) (*[]dto.Person, error) {
+	persons, err := s.PersonRepository.GetAllPersonByQuery(name, age)
+	if err != nil {
+		log.Printf("error while get persons: %s", err.Error())
+		return nil, err
+	}
+
+	var dtoList = make([]dto.Person, 0)
+	for _, person := range persons {
+		personDto := dto.Person{
+			ID:        person.ID,
+			FullName:  person.FullName,
+			Age:       person.Age,
+			CreatedAt: person.CreatedAt,
+			UpdateAt:  person.UpdateAt,
+		}
+
+		dtoList = append(dtoList, personDto)
+	}
+
+	return &dtoList, err
+}

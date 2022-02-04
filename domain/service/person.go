@@ -30,3 +30,7 @@ func (s *PersonAppService) DeletePerson(id int) error {
 func (s *PersonAppService) GetAllPerson(pagination helpers.Pagination) (*helpers.Pagination, error) {
 	return s.PersonService.GetAllPerson(pagination)
 }
+
+func (s *PersonAppService) GetAllPersonByQuery(name string, age int) (*[]dto.Person, error) {
+	return s.PersonService.GetAllPersonByQuery(name, age)
+}

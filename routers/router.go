@@ -17,6 +17,7 @@ func SetupRouters(h *context.Application) *gin.Engine {
 	apiGroup.PUT("/update-person", h.PersonController.UpdatePerson)
 	apiGroup.DELETE("/delete-person", h.PersonController.DeletePerson)
 	apiGroup.GET("/get-all-persons", h.PersonController.GetAllPerson)
+	apiGroup.GET("/get-all-persons-query", h.PersonController.GetAllPersonByQuery)
 
 	return router
 }

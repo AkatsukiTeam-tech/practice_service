@@ -82,3 +82,18 @@ func (p *PersonController) GetAllPerson(c *gin.Context) {
 
 	c.JSON(200, res)
 }
+
+func (p *PersonController) GetAllPersonByQuery(c *gin.Context) {
+	name, _ := c.GetQuery("name")
+	a, _ := c.GetQuery("age")
+
+	age, _ := strconv.Atoi(a)
+
+	res, err := p.PersonAppService.GetAllPersonByQuery(name, age)
+	if err != nil {
+		c.JSON(500, gin.H{"msg": err.Error()})
+		return
+	}
+
+	c.JSON(200, res)
+}
