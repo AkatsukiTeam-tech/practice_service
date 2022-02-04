@@ -65,6 +65,9 @@ func (r PersonRepository) GetAllPersonByQuery(name string, age int) ([]*models.P
 		name = "%" + name + "%"
 	}
 
-	err := r.db.Model(persons).Raw("Select * from people where (? = '' or lower(full_name) like lower(?)) and (? = 0 or age = ?)", name, name, age, age).Find(&persons).Error
+	err := r.db.Model(persons).
+		Raw("Select * from people where (? = '' or lower(full_name) like lower(?)) and (? = 0 or age = ?)", name, name, age, age).
+		Order("Id desc").
+		Find(&persons).Error
 	return persons, err
 }
